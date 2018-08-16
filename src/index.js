@@ -10,7 +10,11 @@ fs.lstat (route, (err, stats) => {
     if (path.extname(route) === '.md') {
       console.log('es md');
       fs.readFile(route,'utf8',(err, data) => {
-        console.log(data);
+        const exp = /\[(.*?)\]\(.*?\)/gm;
+        // console.log(data)
+          const dataFile = data.match(exp);
+          console.log(dataFile)
+
       });
     }
   } else {
