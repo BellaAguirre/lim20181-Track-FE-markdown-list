@@ -1,0 +1,22 @@
+{
+  "name": "lim20181-track-fe-markdown-list",
+  "version": "1.0.0",
+  "description": "libreria",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list.git"
+  },
+  "author": "bella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list/issues"
+  },
+  "homepage": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list#readme"
+}
