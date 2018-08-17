@@ -4,6 +4,7 @@ const path = require('path');
 
 const [,, ...args] = process.argv;
 const route = args[0];
+
 fs.lstat (route, (err, stats) => {
   if (stats.isFile()) {
     console.log('es file');
@@ -11,9 +12,12 @@ fs.lstat (route, (err, stats) => {
       console.log('es md');
       fs.readFile(route,'utf8',(err, data) => {
         const exp = /\[(.*?)\]\(.*?\)/gm;
-        // console.log(data)
           const dataFile = data.match(exp);
-          console.log(dataFile)
+          dataFile.forEach(ele => {
+            const initial = ele.indexOf('http');
+            const final = ele.indexOf(')');
+            console.log(ele.slice(initial,final));
+          })
 
       });
     }
