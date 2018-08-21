@@ -4,9 +4,11 @@ const path = require('path');
 const fetch = require('node-fetch');
 const [,, ...args] = process.argv;
 const route = args[0];
-
+// statusUrl(arr).then((respose)=>{})
 const statusUrl = (arrayUrl) => {
- arrayUrl.forEach(objLink => {
+  // return new Promise
+ const arr = [];
+  arrayUrl.map(objLink => {
    fetch(objLink.url)
     .then((response) => {
       const obj = {
@@ -15,7 +17,13 @@ const statusUrl = (arrayUrl) => {
         file: objLink.file,
         status: response.status
       }
-      console.log(obj); // returns 200
+        arr.push(obj)
+      if(arr.length === arrayUrl.length){
+        console.log(arr);
+        return arr
+      }
+    }).then(()=>{
+
     })
     .catch((err) => {
       const obj = {
@@ -24,7 +32,8 @@ const statusUrl = (arrayUrl) => {
         file: objLink.file,
         status: 'fail'
       }
-      console.log(obj);
+       arr.push(obj);
+      // console.log(obj);
     })
   })
 }
