@@ -5,37 +5,39 @@ const fetch = require('node-fetch');
 const [,, ...args] = process.argv;
 const route = args[0];
 // statusUrl(arr).then((respose)=>{})
-const statusUrl = (arrayUrl) => {
+const linksStatus = (arr) => {
+  console.log(arr);
+  
+}
+const statusUrl = (objet) => {
   // return new Promise
- const arr = [];
-  arrayUrl.map(objLink => {
-   fetch(objLink.url)
-    .then((response) => {
-      const obj = {
-        url: objLink.url,
-        text: objLink.text,
-        file: objLink.file,
-        status: response.status
-      }
-        arr.push(obj)
-      if(arr.length === arrayUrl.length){
-        console.log(arr);
-        return arr
-      }
-    }).then(()=>{
-
-    })
-    .catch((err) => {
-      const obj = {
-        url: objLink.url,
-        text: objLink.text,
-        file: objLink.file,
-        status: 'fail'
-      }
-       arr.push(obj);
-      // console.log(obj);
-    })
+let arr = [];
+objet.map(obje => {
+  fetch(obje.url)
+  .then((response) => {
+    const obj = {
+      url: obje.url,
+      text: obje.text,
+      file: obje.file,
+      status: response.status
+    }
+    arr.push(obj);
+    if (objet.length === arr.length)
+    // console.log(arr)
+    linksStatus(arr);
+    return (arr);
   })
+  .catch((err) => {
+    const obj = {
+      url: obje.url,
+      text: obje.text,
+      file: obje.file,
+      status: 'fail'
+    }
+      arr.push(obj);
+  })
+})
+  
 }
 
 const readFileUrl = (routeFile) => {
@@ -48,7 +50,6 @@ const readFileUrl = (routeFile) => {
       const dataFile = data.match(exp);
       if(dataFile !== null) {
         dataFile.forEach(ele => {
-          // const initial = ele.indexOf('[');
           const final = ele.indexOf(']');
           const obj = {
             url: ele.slice(final + 2, ele.length - 1),
@@ -56,25 +57,22 @@ const readFileUrl = (routeFile) => {
             file: path.resolve(routeFile)
           }
           arrayUrl.push(obj);
-          // console.log(obj);
         });
        }
-      statusUrl(arrayUrl); 
+      //  console.log(arrayUrl)
+      statusUrl(arrayUrl);
     });
   }
 }
 const readDir = (route) => {
   fs.readdir(route, (err, files) => {
-    // console.log(files)
     if (err) throw err;
     for (const item of files) {
-      // console.log(route+'/'+item)
       fs.stat ((route+'/'+item),(err, stats) => {
         if(stats.isFile()) {
           console.log('es file')
           readFileUrl(route+'/'+item);
-        } 
-        if(stats.isDirectory()) {
+        } else if(stats.isDirectory()) {
           console.log('es directorio')
           readDir(route+'/'+item);
         }
