@@ -11,6 +11,8 @@ let options = {
   stats: false,
 }
 
+// const  mdLinks = (url, {})
+
 const mdLinks = (route, options, arr) => {
   if (options.validate) {
     arr.forEach(link => {
@@ -37,36 +39,37 @@ const mdObjectLinks = (arr) => {
   }
   
 }
-const statusLink = (arrayLinks) => {
-  // console.log(arrayLinks);
-  let arr = [];  
-  arrayLinks.forEach(link => {
-  fetch(link.url)
+
+const validateLink = (obj, cb) => {
+  fetch(obj.url)
     .then((response) => {
-      const obj = {
-        url: link.url,
-        text: link.text,
-        file: link.file,
-        status: response.status + ' ok'
-        // ok: 'ok'
+      if (response.status >= 200 && response.status < 400) {
+        cb(null, {
+          ...obj,
+          valido: true,
+          status: response.status,
+        })
+      } else {
+        cb(null, {
+          ...obj,
+          valido: false,
+          status: response.status,
+        })
       }
-      arr.push(obj);
-      if (arr.length === arrayLinks.length) {
-        // console.log(arr);
-        mdObjectLinks(arr);
-      }
-      return obj;
     })
-    .catch((err) => {
-      const obj = {
-        url: link.url,
-        text: link.text,
-        file: link.file,
-        status: 'fail'
-      }
-      arr.push(obj);
-      return obj;
-    })
+  .catch((err) => {
+    cb(null, {
+      ...obj,
+      valido: false,
+      status: 404,
+    });
+  })
+}
+
+const statusLink = (arrayLinks) => {
+  async.map(arrayLinks, validateLink, (err, results) => {
+    // console.log(results)
+    return results;
   })
 }
 
@@ -78,7 +81,7 @@ const readFile = (arrayFile) => {
       const exp = /\[(.*?)\]\(.*?\)/gm;
       const dataFile = read.match(exp);
       dataFile.forEach(ele => {
-        const initial = ele.indexOf('[');
+        // const initial = ele.indexOf('[');
         const final = ele.indexOf(']');
         const obj = {
           url:ele.slice(final + 2, ele.length - 1),
@@ -115,12 +118,12 @@ try {
     arrayFile.push(route);
     const links = readFile(arrayFile);
     statusLink(links);
-  } 
+  }
   if (stat.isDirectory()) {
     const files = readDir(route);
     const links = readFile(files);
-    const aa = statusLink(links);
-    console.log(aa);
+    statusLink(links);
+    console.log(statusLink(links));
     
   }
 
