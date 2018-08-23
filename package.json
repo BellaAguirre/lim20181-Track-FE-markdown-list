@@ -23,6 +23,7 @@
     "md-links": "src/index.js"
   },
   "dependencies": {
+    "async": "^2.6.1",
     "node-fetch": "^2.2.0"
   }
 }

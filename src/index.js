@@ -2,11 +2,12 @@
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
+const async = require("async");
 const [,, ...args] = process.argv;
 const route = args[0];
 // statusUrl(arr).then((respose)=>{})
 const linksStatus = (arr) => {
-  console.log(arr);
+  // console.log(arr);
   
 }
 const statusUrl = (objet) => {
@@ -59,8 +60,7 @@ const readFileUrl = (routeFile) => {
           arrayUrl.push(obj);
         });
        }
-      //  console.log(arrayUrl)
-      statusUrl(arrayUrl);
+      // statusUrl(arrayUrl);
     });
   }
 }
