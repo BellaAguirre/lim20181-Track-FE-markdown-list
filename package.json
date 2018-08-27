@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list#readme",
   "bin": {
-    "md-links": "src/index.js"
+    "md-links": "src/cli.js"
   },
   "dependencies": {
     "async": "^2.6.1",
