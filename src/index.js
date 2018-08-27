@@ -27,7 +27,7 @@ const validateLink = (obj, callback) => {
 const statusLink = (arrayLinks) => {
   async.map(arrayLinks, validateLink, (err, results) => {
     console.log(results);
-    return results;
+    // return results;
   })
 }
 
@@ -39,10 +39,9 @@ const readFile = (arrayFile) => {
       const exp = /\[(.*?)\]\(.*?\)/gm;
       const dataFile = read.match(exp);
       dataFile.forEach(ele => {
-        // const initial = ele.indexOf('[');
         const final = ele.indexOf(']');
         const obj = {
-          url:ele.slice(final + 2, ele.length - 1),
+          url: ele.slice(final + 2, ele.length - 1),
           text: ele.slice(1, final),
           file: path.resolve(file)
         }
@@ -70,6 +69,13 @@ const readDir = (route) => {
     })
   });
 }
+
+const flatten = (arrayFile) => {
+  return arrayFile.reduce((flat, toFlatten) => {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
 const dirOrFile = (route) => {
   return new Promise((resolve, reject) => {
     resolve(
@@ -93,13 +99,4 @@ const  mdLinks = (route, options) => {
   })
 }
 
-mdLinks(route, options).then(response => {
-  console.log(response);
-})
-
-const flatten = (arrayFile) => {
-  return arrayFile.reduce((flat, toFlatten) => {
-    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-  }, []);
-}
 module.exports = mdLinks;
