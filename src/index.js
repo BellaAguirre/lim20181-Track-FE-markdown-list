@@ -4,6 +4,46 @@ const path = require('path');
 const fetch = require('node-fetch');
 const async = require("async");
 
+let options = {
+  validate : false,
+  stats: false,
+}
+
+const validateLink = (obj, callback) => {
+  fetch(obj.url)
+    .then((response) => {
+      if (response.status >= 200 && response.status < 400) {
+        callback(null, {
+          ...obj,
+          valido: true,
+          status: response.status,
+        });
+      } else {
+        callback(null, {
+          ...obj,
+          valido: false,
+          status: response.status,
+        });
+      }
+    })
+  .catch((err) => {
+    callback(null, {
+      ...obj,
+      valido: false,
+      status: 404,
+    });
+  })
+}
+
+const statusLink = (arrayLinks) => {
+  return new Promise((resolve, reject) => {
+    async.map(arrayLinks, validateLink, (err, results) => {
+      if (err) reject(err);
+      resolve(results);
+    })
+  })
+}
+
 const readFileMd = (arrayFile) => {
   const arrayLink = [];
   for (const file of arrayFile) {
