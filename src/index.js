@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const fetch = require('node-fetch');
-const async = require("async");
+const fs = require('fs')
+const path = require('path')
+const fetch = require('node-fetch')
+const async = require('async')
 
 const validateLink = (obj, callback) => {
   fetch(obj.url)
@@ -128,4 +128,4 @@ const mdLinks = (route, options) => {
   });
 }
 
-module.exports = mdLinks;
+module.exports = mdLinks
