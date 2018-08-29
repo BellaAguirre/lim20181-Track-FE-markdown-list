@@ -1,7 +1,7 @@
 {
-  "name": "lim20181-track-fe-markdown-list",
-  "version": "1.0.0",
-  "description": "libreria",
+  "name": "@bellaaguirreccahuana/md-links",
+  "version": "0.1.0",
+  "description": "libreria links markdown",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list.git"
   },
-  "author": "bella",
+  "author": "Bella Sheryl Aguirre Ccahuana <bellas.aguirre.ccahuana@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list/issues"
