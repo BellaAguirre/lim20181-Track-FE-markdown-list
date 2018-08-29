@@ -9,7 +9,7 @@ const validateLink = (obj, callback) => {
       if (response.status >= 200 && response.status < 400) {
         callback(null, {
           ...obj,
-          valido: true,
+          valido: response.statusText,
           status: response.status,
         });
       }
@@ -17,7 +17,7 @@ const validateLink = (obj, callback) => {
     .catch(() => {
       callback(null, {
         ...obj,
-        valido: false,
+        valido: 'fail',
         status: 404,
       });
     });
@@ -42,19 +42,19 @@ const readFileMd = (arrayFile) => {
       const exp = /\[(.*?)\]\(.*?\)/gm;
       const dataFile = read.match(exp);
       if (dataFile !== null) {
-        dataFile.forEach((ele) => {
-          const final = ele.indexOf(']');
+        dataFile.forEach((element) => {
+          const final = element.indexOf(']');
           const obj = {
-            url: ele.slice(final + 2, ele.length - 1),
-            text: ele.slice(1, final),
+            url: element.slice(final + 2, element.length - 1),
+            text: element.slice(1, final),
             file: path.resolve(file),
           };
           arrayLink.push(obj);
         });
       }
     });
-    return arrayLink;
   }
+  return arrayLink;
 };
 
 const statPath = (route) => {
@@ -120,7 +120,7 @@ const mdLinks = (route, options) => {
             const linkUnique = response.map(item => item.url)
               .filter((value, index, self) => self.indexOf(value) === index);
             response.forEach((link) => {
-              if (!link.valido) {
+              if (link.valido === 'fail') {
                 broque = 1 + broque;
               }
             });
@@ -136,7 +136,7 @@ const mdLinks = (route, options) => {
           .then((response) => {
             const linkUnique = response.map(item => item.url)
               .filter((value, index, self) => self.indexOf(value) === index);
-            resolve('total: ', response.length, ' unique: ', linkUnique.length);
+            resolve({ total: response.length, unique: linkUnique.length });
           });
       } else dirOrFile(route).then(response => resolve(readFileMd(response)));
     } catch (err) {
