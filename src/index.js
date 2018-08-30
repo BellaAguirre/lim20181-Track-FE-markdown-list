@@ -61,9 +61,13 @@ const statPath = (route) => {
   const promise = new Promise((resolve, reject) => {
     fs.stat(route, (err, stats) => {
       try {
+        if (err) {
+          reject(err);
+          return;
+        }
         resolve(stats.isFile());
       } catch (e) {
-        reject(err);
+        reject(new Error('no existe la ruta'));
       }
     });
   });
@@ -102,7 +106,7 @@ const dirOrFile = (route) => {
           }),
       );
     } catch (err) {
-      reject(err);
+      reject(new Error(err));
     }
   });
   return promise;

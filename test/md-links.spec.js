@@ -1,6 +1,6 @@
 const mdLinks = require('../src/index');
 
-jest.setTimeout(10000);
+jest.setTimeout(7000);
 test('deberia retornar un arreglo de objetos con [{url, text, file, valido, status}] para --validate ', () => {
   const options = {
     validate: true,
@@ -12,28 +12,28 @@ test('deberia retornar un arreglo de objetos con [{url, text, file, valido, stat
         url: 'https://github.com/workshopper/learnyounode',
         text: 'learnyounode',
         file: 'C:\\Users\\Bella Sheryl Aguirre\\Documents\\lim20181-Track-FE-markdown-list\\test\\prueba\\README.md',
-        valido: true,
+        valido: 'OK',
         status: 200,
       },
       {
         url: 'https://github.com/workshopper/learnyounode',
         text: 'learnyounode',
         file: 'C:\\Users\\Bella Sheryl Aguirre\\Documents\\lim20181-Track-FE-markdown-list\\test\\prueba\\README.md',
-        valido: true,
+        valido: 'OK',
         status: 200,
       },
       {
         url: 'https://nodejsor/api/fs.html#fs_fs_readfile_path_options_callback',
         text: 'Leer un archivo',
         file: 'C:\\Users\\Bella Sheryl Aguirre\\Documents\\lim20181-Track-FE-markdown-list\\test\\prueba\\otracarpeta\\README.md',
-        valido: false,
+        valido: 'fail',
         status: 404,
       },
       {
         url: 'https://nodejs.org/api/fs.html#fs_fs_readdir_path_options_callback',
         text: 'Leer un Directorio',
         file: 'C:\\Users\\Bella Sheryl Aguirre\\Documents\\lim20181-Track-FE-markdown-list\\test\\prueba\\otracarpeta\\README.md',
-        valido: true,
+        valido: 'OK',
         status: 200,
       }]);
   });
