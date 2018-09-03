@@ -23,7 +23,7 @@ de los links validos, rotos y la cantidad total de links existentes.
 
 ## Versión
 
-0.1.1
+0.1.3 
 
 ### Ejemplo
 Instalando paquete ...
