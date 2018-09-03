@@ -85,3 +85,13 @@ test('deberia retornar un arreglo de objetos con  [{url, text, file}]', () => {
       }]);
   });
 });
+test('deberia retornar error', () => {
+  const options = {
+    validate: false,
+    stats: false,
+  };
+
+  return mdLinks('test/prue', options).catch((response) => {
+    expect(response).toEqual(new Error('esta ruta no existe'));
+  });
+});

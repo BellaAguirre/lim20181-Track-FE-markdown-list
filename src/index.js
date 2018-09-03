@@ -60,15 +60,11 @@ const readFileMd = (arrayFile) => {
 const statPath = (route) => {
   const promise = new Promise((resolve, reject) => {
     fs.stat(route, (err, stats) => {
-      try {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(stats.isFile());
-      } catch (e) {
-        reject(new Error('no existe la ruta'));
+      if (err) {
+        reject(err);
+        return;
       }
+      resolve(stats.isFile());
     });
   });
   return promise;
@@ -94,20 +90,16 @@ const flatten = (arrayFile) => {
 
 const dirOrFile = (route) => {
   const promise = new Promise((resolve, reject) => {
-    try {
-      resolve(
-        statPath(route)
-          .then((stat) => {
-            if (stat) return [route];
-            return readDir(route)
-              .then(files => files.map(file => dirOrFile(path.join(route, file))))
-              .then(promises => Promise.all(promises))
-              .then(arr => flatten(arr));
-          }),
-      );
-    } catch (err) {
-      reject(new Error(err));
-    }
+    statPath(route)
+      .then((stat) => {
+        if (stat) return [route];
+        return readDir(route)
+          .then(files => files.map(file => dirOrFile(path.join(route, file))))
+          .then(promises => Promise.all(promises))
+          .then(arr => flatten(arr));
+      })
+      .then(array => resolve(array))
+      .catch(err => reject(err.message));
   });
   return promise;
 };
@@ -115,36 +107,35 @@ const dirOrFile = (route) => {
 const mdLinks = (route, options) => {
   let broque = 0;
   return new Promise((resolve, reject) => {
-    try {
-      if (options.validate && options.stats) {
-        dirOrFile(route)
-          .then(response => readFileMd(response))
-          .then(links => statusLink(links))
-          .then((response) => {
-            const linkUnique = response.map(item => item.url)
-              .filter((value, index, self) => self.indexOf(value) === index);
-            response.forEach((link) => {
-              if (link.valido === 'fail') {
-                broque = 1 + broque;
-              }
-            });
-            resolve({ total: response.length, unique: linkUnique.length, broquen: broque });
+    if (options.validate && options.stats) {
+      dirOrFile(route)
+        .then(response => readFileMd(response))
+        .then(links => statusLink(links))
+        .then((response) => {
+          const linkUnique = response.map(item => item.url)
+            .filter((value, index, self) => self.indexOf(value) === index);
+          response.forEach((link) => {
+            if (link.valido === 'fail') {
+              broque = 1 + broque;
+            }
           });
-      } else if (options.validate) {
-        dirOrFile(route)
-          .then(response => readFileMd(response))
-          .then(status => resolve(statusLink(status)));
-      } else if (options.stats) {
-        dirOrFile(route)
-          .then(response => readFileMd(response))
-          .then((response) => {
-            const linkUnique = response.map(item => item.url)
-              .filter((value, index, self) => self.indexOf(value) === index);
-            resolve({ total: response.length, unique: linkUnique.length });
-          });
-      } else dirOrFile(route).then(response => resolve(readFileMd(response)));
-    } catch (err) {
-      reject(err.message);
+          resolve({ total: response.length, unique: linkUnique.length, broquen: broque });
+        });
+    } else if (options.validate) {
+      dirOrFile(route)
+        .then(response => readFileMd(response))
+        .then(status => resolve(statusLink(status)));
+    } else if (options.stats) {
+      dirOrFile(route)
+        .then(response => readFileMd(response))
+        .then((response) => {
+          const linkUnique = response.map(item => item.url)
+            .filter((value, index, self) => self.indexOf(value) === index);
+          resolve({ total: response.length, unique: linkUnique.length });
+        });
+    } else {
+      dirOrFile(route).then(response => resolve(readFileMd(response)))
+        .catch(() => reject(new Error('esta ruta no existe')));
     }
   });
 };
