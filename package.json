@@ -1,28 +1,36 @@
 {
-  "name": "lim20181-track-fe-markdown-list",
-  "version": "1.0.0",
-  "description": "libreria",
-  "main": "index.js",
+  "name": "@bellasacc/md-links",
+  "version": "0.1.1",
+  "description": "libreria links markdown",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage",
+    "eslint": "eslint --ext .js src/ test/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list.git"
   },
-  "author": "bella",
+  "author": "Bella Sheryl Aguirre Ccahuana <bellas.aguirre.ccahuana@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list/issues"
   },
   "homepage": "https://github.com/BellaAguirre/lim20181-Track-FE-markdown-list#readme",
   "bin": {
-    "md-links": "src/index.js"
+    "md-links": "src/cli.js"
   },
   "dependencies": {
+    "async": "^2.6.1",
     "node-fetch": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.5.0"
   }
 }
